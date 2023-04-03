@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Calculator</title>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+    .img-container {
+      text-align: center;
+      display: block;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+<h1>Calculator</h1>
+<div>
+    <form id="angles" action="/derivative" method="POST">
+        <div>
+            Rules for input:
+            <br>
+            <ul>
+            <li>Only letter can be used as variable (i.e. x).</li>
+            <li>If the expression is in the form of multiple term's addition, avoid using the minus sign ("-") and best, put parenthesis around the terms (i.e. (3x)+(-log(5)(x))).</li>
+            <li>Even if a "+" sign is in one of the terms, please also use parenthesis to protect the individual terms (i.e. (sin((3x)+(log(3)((x^2)+(x)))))+(5x)).</li>
+            <li>Only explicit functions can be calculated.</li>
+            <li>When entering inverse trignometry functions, use arcsin(x) or arccos(x) instead of sin^-1(x).</li>
+            <li>When entering exponents, please use the "(base)^(exponent)" model.</li>
+            <li>If you want to enter a logarithm term with base "a" and content "b", enter in the form log("a")("b") (i.e. log(3)(x) has 3 as the base and x as the content in logarithm).</li>
+            <li></li>
+            <br>
+        </ul>
+        </div>
+        <div class="form-group">
+            <label for="decimals" class="col-sm-2 text-nowrap">Please input your expression: </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="expression" id="expression"
+                    value="{% if result %}{{ result.expression }}{% endif %}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="decimals" class="col-sm-2 text-nowrap">Please input your variable: </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="variable" id="variable"
+                    value="{% if result %}{{ result.variable }}{% endif %}">
+            </div>
+        <div class="form-group">
+            <label for="decimals" class="col-sm-2 text-nowrap">Please input the degree of differentiation: </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="degree" id="degree"
+                    value="{% if result %}{{ result.degree }}{% endif %}">
+            </div>
+        </div>
+        <input type="submit" name="submit" id="submit" value="Calculate" />
+
+    </form>
+</div>
+{% if result and result.message %}
+<p></p>
+<p></p>
+<p></p>
+<br>
+<br>
+<br>
+<div>
+    <h2>ERROR: {{ result.message}}</h2>
+</div>
+
+{% elif result and result.result %}
+<p>
+<div>
+    <h2 align="center">Derivative</h2>
+    <hr>
+    <p></p>
+    <!-- <div class="img-container"><img src="/static/derivative.png"/></div>
+    <p></p> -->
+    <div ><table align="center"> 
+        <tr>
+            <td>
+                <img src="/static/derivative_origin.png" />
+            </td>
+            <td>
+                <img src="/static/derivative_result.png" />
+            </td>
+        </tr>
+    </table>
+    </div>
+    <div>{{ result.result }}</div>
+    {% endif %}
+    {% endblock %}

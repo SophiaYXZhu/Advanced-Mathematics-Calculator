@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Calculator</title>
+{% endblock %}
+
+{% block body %}
+<h1>Calculator</h1>
+<div>
+    <form id="angles" action="/triangles" method="POST">
+        <table>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label for="AngleA" class="col-sm-2 text-nowrap">Angle A</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="angle_a" id="angle_a"
+                                value="{% if result %}{{ result.angle_a }}{% endif %}">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label for="AngleB" class="col-sm-2 text-nowrap">Angle B</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="angle_b" id="angle_b"
+                                value="{% if result %}{{ result.angle_b }}{% endif %}">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label for="AngleC" class="col-sm-2 text-nowrap">Angle C</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="angle_c" id="angle_c"
+                                value="{% if result %}{{ result.angle_c }}{% endif %}">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label for="Sidea" class="col-sm-2 text-nowrap">Side a</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="side_a" id="side_a"
+                                value="{% if result %}{{ result.side_a }}{% endif %}">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label for="Sideb" class="col-sm-2 text-nowrap">Side b</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="side_b" id="side_b"
+                                value="{% if result %}{{ result.side_b }}{% endif %}">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label for="Sidec" class="col-sm-2 text-nowrap">Side c</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="side_c" id="side_c"
+                                value="{% if result %}{{ result.side_c }}{% endif %}">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=3>
+                    <div class="form-group">
+                        <label for="decimals" class="col-sm-2 text-nowrap">How many places of decimals do you want to
+                            keep?</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="decimals" id="decimals"
+                                value="{% if result %}{{ result.decimals }}{% else %}3{% endif %}">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td align="center">
+                    <input type="submit" name="submit" id="submit" value="Calculate" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% if result and result.message %}
+<p></p>
+    <p></p>
+    <p></p>
+    <br>
+    <br>
+    <br>
+    <div>
+        <h2>ERROR: {{ result.message}}</h2>
+    </div>
+
+{% elif result and result.area %}
+<p>
+<div>
+    <h2>{% if result.area1 %}Possibility 1{% else %}Calculator Result{% endif %}</h2>
+    <br><img src="/static/foo.png" /></br>
+    <br>
+    <div>
+        <table>
+            <tr>
+                <th> SIDE a </th>
+                <th> SIDE b </th>
+                <th> SIDE c </th>
+            </tr>
+            <tr>
+                <td> {{ result.sides[0] }}</td>
+                <td> {{result.sides[1]}}</td>
+                <td> {{result.sides[2]}}</td>
+            </tr>
+            <tr>
+                <th> ANGLE A </th>
+                <th> ANGLE B </th>
+                <th> ANGLE C </th>
+            </tr>
+            <tr>
+                <td> {{result.angles[0]}}</td>
+                <td> {{result.angles[1]}}</td>
+                <td> {{result.angles[2]}}</td>
+            </tr>
+            <tr>
+                <th> HEIGHT to side a </th>
+                <th> HEIGHT to side b </th>
+                <th> HEIGHT to side c </th>
+            </tr>
+            <tr>
+                <td> {{result.height_a}}</td>
+                <td> {{result.height_b}} </td>
+                <td> {{result.height_c}}</td>
+            </tr>
+            <tr>
+                <th colspan=3> AREA </th>
+            </tr>
+            <tr>
+                <td colspan=3> {{result.area}}</td>
+            </tr>
+        </table>
+        <p />
+        <h4>STEPS: </h4>
+        {% if result.steps %}
+        <ul>
+            {% for step in result.steps %}
+            <li>{{ step }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <p>
+            <b>*The area of the triangle is calculated by the Heron's formula: sqrt(s*(s-a)*(s-b)*(s-c)), where s =
+                (a+b+c)/2.</b>
+    </div>
+    <br>
+</div>
+{% endif %}
+{% if result.area1 %}
+<div>
+    <h2>Possibility 2</h2>
+    <br><img src="/static/foo1.png" /></br>
+    <br>
+    <div>
+        <table>
+            <tr>
+                <th> SIDE a </th>
+                <th> SIDE b </th>
+                <th> SIDE c </th>
+            </tr>
+            <tr>
+                <td> {{result.sides[0] }}</td>
+                <td> {{result.sides[1]}}</td>
+                <td> {{result.sides[2]}}</td>
+            </tr>
+            <tr>
+                <th> ANGLE A </th>
+                <th> ANGLE B </th>
+                <th> ANGLE C </th>
+            </tr>
+            <tr>
+                <td> {{result.angles[0]}}</td>
+                <td> {{result.angles[1]}}</td>
+                <td> {{result.angles[2]}}</td>
+            </tr>
+            <tr>
+                <th> HEIGHT to side a </th>
+                <th> HEIGHT to side b </th>
+                <th> HEIGHT to side c </th>
+            </tr>
+            <tr>
+                <td> {{result.height_a1}}</td>
+                <td> {{result.height_b1}} </td>
+                <td> {{result.height_c1}}</td>
+            </tr>
+            <tr>
+                <th colspan=3> AREA </th>
+            </tr>
+            <tr>
+                <td colspan=3> {{result.area1}}</td>
+            </tr>
+        </table>
+        <p />
+        <h4>STEPS: </h4>
+        {% if result.steps1 %}
+        <ul>
+            {% for step in result.steps1 %}
+            <li>{{ step }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <p>
+            <b>*The area of the triangle is calculated by the Heron's formula: sqrt(s*(s-a)*(s-b)*(s-c)), where s =
+                (a+b+c)/2.</b>
+    </div>
+    <br>
+</div>
+{% endif %}
+{% endblock %}

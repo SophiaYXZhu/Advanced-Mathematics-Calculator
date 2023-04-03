@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Calculator</title>
+{% endblock %}
+
+{% block body %}
+<h1>Calculator</h1>
+<div>
+    <form id="angles" action="/graph" method="POST">
+        <div>
+            Rules for input:
+            <br>
+            <ul>
+                <li>Number of jobs need be positive integer >= 2, such as 3, or 6.</li>
+                <li>Lengths of path should be positive integer >= 1.</li>
+                <li>The job index starting with 0, and one pair need be separated by "," (i.e. 0,1), max job index cannot be >= number of jobs entered.</li>
+                <br>
+            </ul>
+        </div>
+        <div class="form-group">
+            <label for="decimals" class="col-sm-2 text-nowrap">Please enter number of jobs: </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="job_number" id="job_number"
+                    value="{% if result %}{{ result.job_number }}{% endif %}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="decimals" class="col-sm-2 text-nowrap">Please enter lengths of paths: </label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="paths_length" id="paths_length"
+                    value="{% if result %}{{ result.paths_length }}{% endif %}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Please enter the job info separated by ",", i.e. 0,1</label>
+            <textarea class="form-control" id="job_data" name="job_data", rows="10">{% if result %}{{ result.job_data }}{% endif %}</textarea>
+          </div>
+        <input type="submit" name="submit" id="submit" value="Generate topological order" />
+
+    </form>
+</div>
+{% if result and result.message %}
+<p></p>
+<p></p>
+<p></p>
+<br>
+<br>
+<br>
+<div>
+    <h2>ERROR: {{ result.message}}</h2>
+</div>
+{% elif result and result.result %}
+<p>
+<div>
+    <h2 align="center">Topological Order</h2>
+    <hr>
+    <p></p>
+    <div align = 'center'>{{ result.result[0] }}</div>
+    <hr>
+    <p></p>
+    <h2 align="center">Number of Paths with Lengths {{ result.paths_length }}</h2>
+    <hr>
+    <p></p>
+    <!-- <div>{{ result.result[1] }}</div> -->
+    <div align = 'center'>
+        {% for i in result.result[1]  %}
+        <p></p>
+        {{ i }}
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}
